@@ -24,14 +24,25 @@ namespace Infrastructure.Persistence
         public DbSet<Address> Addresses { get; set; }
         public DbSet<ErrorLog> ErrorLogs { get; set; }
         public DbSet<Resource> Resources { get; set; }
-        public DbSet<SkillMapping> SkillMappings { get; set; }
+        public DbSet<MainSkillMapping> MainSkillMappings { get; set; }
+        public DbSet<SubSkillMapping> SubSkillMappings { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<ProjectResourceMapping> ProjectResourceMappings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-          
+                modelBuilder.Entity<Resource>()
+                .HasMany(r => r.Contacts)
+                .WithOne()  // No navigation property in Contact
+                .HasForeignKey(c => c.ResourceId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-
+            //modelBuilder.Entity<Resource>()
+            //.HasMany(r => r.SubSkills)
+            //.WithOne()
+            //.HasForeignKey(ss => ss.ResourceId)
+            //.OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

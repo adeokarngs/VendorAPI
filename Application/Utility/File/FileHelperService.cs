@@ -61,7 +61,7 @@ namespace Application.Utility.File
         public async Task<(string FileName, byte[] FileBytes)> download(string fid)
         {
 
-            var file = (await _file.GetByConditionAsync(x => x.fid == Guid.Parse(fid))).FirstOrDefault();
+            var file = ( _file.GetByConditionAsync(x => x.fid == Guid.Parse(fid))).ToList().FirstOrDefault();
             if (file!= null)
             {
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), file.filePath);

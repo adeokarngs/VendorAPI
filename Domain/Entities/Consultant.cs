@@ -12,7 +12,8 @@ namespace Domain.Entities
         public ICollection<Address> Addresses { get; set; }
         public string SocialMediaAccounts { get; set; }
         public ICollection<Contact> AlternateContact { get; set; }
-        public ICollection<SkillMapping> SubSkill { get; set; }
+        public ICollection<MainSkillMapping> MainSkills { get; set; }
+        public ICollection<SubSkillMapping> SubSkills { get; set; }
         public bool IsOpenForVerification { get; set; }
     }
 }

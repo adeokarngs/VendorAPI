@@ -6,8 +6,18 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class SkillMapping : Base
+    public class MainSkillMapping : Base
     {
-        public Master Skill { get; set; }
+        public int SkillId { get; set; }
+        public int? ResourceId { get; set; }
+        public int? ConsultantId { get; set; }
+        public virtual Master? Skill { get; set; }
+    }
+    public class SubSkillMapping : Base
+    {
+        public int SkillId { get; set; }
+        public int? ResourceId { get; set; }
+        public int? ConsultantId { get; set; }
+        public virtual Master? Skill { get; set; }
     }
 }

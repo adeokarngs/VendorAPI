@@ -10,7 +10,7 @@ namespace Domain.Entities
     public class Base
     {
         [Key]
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public int CreatedBy { get; set; }
         public int? UpdatedBy { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;

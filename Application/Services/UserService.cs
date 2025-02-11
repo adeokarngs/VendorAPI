@@ -21,14 +21,14 @@ namespace Application.Services
         }
 
 
-        public GridResponse<List<User>> GetGrid(GridRequest request)
+        public async  Task<GridResponse<List<User>>> GetGrid(GridRequest request)
         {
 
             IQueryable<User> users  = GetAllAsync([u=>u.Role,
                     u => u.Vendor,
                     u=>u.Consultant]).AsQueryable();
 
-            var lstUsers = GridHelperService.GetPagedList(users, request);
+            var lstUsers = await GridHelperService.GetPagedList(users, request);
             // Set "MiddleName" to null for all users
             lstUsers?.ForEach(user => user.Password = null);
             var response = new GridResponse<List<User>>(lstUsers, users.Count());

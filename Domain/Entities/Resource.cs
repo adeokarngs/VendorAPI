@@ -16,8 +16,20 @@ namespace Domain.Entities
         [StringLength(100, MinimumLength = 2, ErrorMessage = "Name must be between 2 and 100 characters.")]
         public string Name { get; set; }
 
-        // Gender (Reference to Master table)
-        public Master Gender { get; set; }  // Assuming Gender is a Master table (like an enum)
+
+        [Required] // This ensures VendorDetailsId is mandatory
+        public int VendorDetailsId { get; set; }
+
+        // Navigation property (Optional, EF automatically maps via VendorDetailsId)
+        public virtual VendorDetails? VendorDetails { get; set; }
+
+
+
+        [Required] // This ensures GenderId is mandatory
+        public int GenderId { get; set; }
+
+        // Navigation property (Optional, EF automatically maps via GenderId)
+        public virtual Master? Gender { get; set; }
 
         // Age of the employee (Resource)
         [Range(18, 65, ErrorMessage = "Age must be between 18 and 65.")]
@@ -38,11 +50,15 @@ namespace Domain.Entities
         public string JobTitle { get; set; }
 
 
-        // public int MainSkillRid { get; set; }
-        public Master? MainSkill { get; set; }
+        public virtual ICollection<Contact>? Contacts { get; set; }
 
-        public ICollection<SkillMapping> SubSkill { get; set; }
-      
+        // public int MainSkillRid { get; set; }
+        public virtual ICollection<MainSkillMapping>? MainSkills { get; set; }
+
+        public virtual ICollection<SubSkillMapping>? SubSkills { get; set; }
+        public virtual ICollection<Address>? Addresses { get; set; }
+        public virtual ICollection<ProjectResourceMapping>? Projects { get; set; }
+
     }
 
    

@@ -20,7 +20,7 @@ namespace Application.Services
             List<Master> finalMasterList = new List<Master>();
             foreach (var item in type)
             {
-                var foundItem = await GetByConditionAsync(x => x.Type == item);
+                var foundItem =  GetByConditionAsync(x => x.Type == item).ToList();
                 if (foundItem.Count() > 0)
                 {
                     finalMasterList.AddRange(foundItem);
@@ -31,7 +31,7 @@ namespace Application.Services
         }
         public async Task<List<Master>> GetByParentId(int parentId)
         {
-            return (await GetByConditionAsync(x=>x.ParentId == parentId)).ToList();    
+            return ( GetByConditionAsync(x=>x.ParentId == parentId)).ToList();    
         }
     }
 }

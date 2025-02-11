@@ -11,6 +11,6 @@ namespace Application.Interfaces
 {
     public interface IUserService : IBaseService<User>
     {
-        GridResponse<List<User>> GetGrid(GridRequest request);
+        Task<GridResponse<List<User>>> GetGrid(GridRequest request);
     }
 }

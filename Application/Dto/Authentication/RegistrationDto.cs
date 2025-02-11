@@ -8,9 +8,10 @@ namespace Application.Dto.Authentication
 {
     public class RegistrationDto
     {
-        public string email { get; set; }
-        public string password { get; set; }
-        public string invitationId { get; set; }
-        public int roleId { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string InvitationId { get; set; }
+        public int RoleId { get; set; }
     }
 }

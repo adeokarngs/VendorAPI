@@ -25,7 +25,7 @@ namespace Application.Services
 
         public async Task<LoginResponse> Login(LoginRequest user)
         {
-            var oUser = await _userService.GetByConditionAsync(x => x.Email == user.email && x.Password == user.password, x => x.Role,x=>x.Vendor);
+            var oUser =  _userService.GetByConditionAsync(x => x.Email == user.email && x.Password == user.password, x => x.Role,x=>x.Vendor).ToList();
             if (oUser.Count() > 0)
             {
                 string token = _jwt.GenerateToken(oUser.FirstOrDefault().Email);
@@ -47,7 +47,7 @@ namespace Application.Services
 
         public async Task<User> Register(RegistrationDto user)
         {
-            var oUser = (await _userService.GetByConditionAsync(x => x.Email == user.email)).FirstOrDefault();
+            var oUser = ( _userService.GetByConditionAsync(x => x.Email == user.Email)).ToList().FirstOrDefault();
             if (oUser != null)
             {
                 throw new Exception("User with same id exists");
@@ -56,11 +56,11 @@ namespace Application.Services
             oUser = user.Adapt<User>();
             oUser.CreatedBy = 1;
             await _userService.AddAsync(oUser);
-            oUser = (await _userService.GetByConditionAsync(x => x.Email == user.email)).FirstOrDefault();
+            oUser = ( _userService.GetByConditionAsync(x => x.Email == user.Email)).ToList().FirstOrDefault();
 
             if (oUser != null)
             {
-                var invitation = (await _invite.GetByConditionAsync(x => x.Code == Guid.Parse(user.invitationId))).FirstOrDefault();
+                var invitation = ( _invite.GetByConditionAsync(x => x.Code == Guid.Parse(user.InvitationId))).ToList().FirstOrDefault();
                 invitation.IsUsed = true;
                 await _invite.UpdateAsync(invitation);
                 return oUser;
@@ -74,7 +74,7 @@ namespace Application.Services
         {
             
             var invitation = invitationDto.Adapt<Invitation>();
-            var existingInvitation = (await _invite.GetByConditionAsync(x => x.Email == invitation.Email)).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+            var existingInvitation = ( _invite.GetByConditionAsync(x => x.Email == invitation.Email)).ToList().OrderByDescending(x => x.CreatedDate).FirstOrDefault();
             if (existingInvitation == null)
             {
                 return await _invite.AddAsync(invitation);
@@ -91,7 +91,7 @@ namespace Application.Services
         }
         public async Task<Invitation> GetInvite(string code)
         {
-            var invitation = (await _invite.GetByConditionAsync(x => x.Code == Guid.Parse(code),x=>x.Role)).FirstOrDefault();
+            var invitation = ( _invite.GetByConditionAsync(x => x.Code == Guid.Parse(code),x=>x.Role)).ToList().FirstOrDefault();
 
             if (invitation == null)
             {

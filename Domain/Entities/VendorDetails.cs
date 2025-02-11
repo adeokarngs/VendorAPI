@@ -10,7 +10,7 @@ namespace Domain.Entities
     public class VendorDetails : Base
     {
         public int UserId { get; set; }
-        //public ICollection<Address> Addresses { get; set; }
+      //  public virtual ICollection<Resource>? Resources { get; set; }
 
 
         [Required(ErrorMessage = "Email ID is required.")]

@@ -18,4 +18,18 @@ namespace Application.Utility.ServerSideGrid
         public string? sortColumn { get; set; } = "createdDate";
         public string? sortOrder { get; set; } = "desc";
     }
+
+    public class GridRequest<T>
+    {
+        public GridRequest()
+        {
+
+        }
+
+        public int page { get; set; }
+        public int pageSize { get; set; }
+        public string? sortColumn { get; set; } = "createdDate";
+        public string? sortOrder { get; set; } = "desc";
+        public T uData { get; set; }
+    }
 }

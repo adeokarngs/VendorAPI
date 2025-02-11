@@ -13,9 +13,14 @@ namespace Application.Utility.ServerSideGrid
     public class GridHelperService
     {
 
-        public static List<T> GetPagedList<T>(IQueryable<T> list, GridRequest request)
+        public static async Task<List<T>> GetPagedList<T>(IQueryable<T> list, GridRequest request)
         {
-            return ApplyDynamicSorting(list, request.sortColumn, request.sortOrder).Skip(request.page * request.pageSize).Take(request.pageSize).ToList();
+            return  await ApplyDynamicSorting(list, request.sortColumn, request.sortOrder).Skip(request.page * request.pageSize).Take(request.pageSize).ToListAsync();
+        }
+
+        public static async Task<List<T>> GetPagedList<T>(IQueryable<T> list, GridRequest<T> request)
+        {
+            return await ApplyDynamicSorting(list, request.sortColumn, request.sortOrder).Skip(request.page * request.pageSize).Take(request.pageSize).ToListAsync();
         }
         public static IQueryable<T> ApplyDynamicSorting<T>(IQueryable<T> query, string? oSortColumn, string oSortOrder = "desc")
         {

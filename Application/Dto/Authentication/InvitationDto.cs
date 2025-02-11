@@ -8,9 +8,9 @@ namespace Application.Dto.Authentication
 {
     public class InvitationDto
     {
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public string email { get; set; }
-        public int roleId { get; set; }
+        public string Email { get; set; }
+        public int RoleId { get; set; }
     }
 }

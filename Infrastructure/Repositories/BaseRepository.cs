@@ -19,20 +19,40 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes)
+        public async Task<T> GetByIdAsync(int id)
         {
-
             IQueryable<T> query = _context.Set<T>();
 
-            // Apply dynamic Includes
-            if (includes != null)
+            // Get all navigation properties dynamically
+            var navigationProperties = _context.Model
+                .FindEntityType(typeof(T))?
+                .GetNavigations()
+                .Select(n => n.Name)
+                .ToList();
+
+            if (navigationProperties != null)
             {
-                foreach (var include in includes)
+                foreach (var navigationProperty in navigationProperties)
                 {
-                    query = query.Include(include);
+                    query = query.Include(navigationProperty);
                 }
             }
-            // Retrieve the entity by its id with optional includes
+
+            // Retrieve the entity by its ID
+            return await query.AsNoTracking().Where(e => EF.Property<int>(e, "Id") == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<T> GetByIdAsync(int id, Func<IQueryable<T>, IQueryable<T>> includes = null)
+        {
+            IQueryable<T> query = _context.Set<T>();
+
+            // Apply dynamic includes if provided
+            if (includes != null)
+            {
+                query = includes(query);
+            }
+
+            // Retrieve the entity by its ID with optional includes
             return await query.Where(e => EF.Property<int>(e, "Id") == id).FirstOrDefaultAsync();
         }
 
@@ -74,7 +94,7 @@ namespace Infrastructure.Repositories
             _context.Set<T>().Remove(entity);
         }
 
-        public async Task<IEnumerable<T>> GetByConditionAsync(Expression<Func<T, bool>> predicate,params Expression<Func<T, object>>[] includes)
+        public IQueryable<T> GetByConditionAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _context.Set<T>().Where(predicate);
 
@@ -87,7 +107,7 @@ namespace Infrastructure.Repositories
                 }
             }
 
-            return await query.ToListAsync();
+            return query;
         }
     }
 }
